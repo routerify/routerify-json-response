@@ -1,117 +1,85 @@
-//! An utility library to send JSON response.
+//! A utility library to send JSON response for [`Routerify`](https://github.com/routerify/routerify) and the Rust HTTP library [`hyper.rs`](https://hyper.rs/) apps.
+//!
+//! In `Success` case, It generates JSON response in the following format:
+//!
+//! ```json
+//! {
+//!     "status": "success",
+//!     "code": "<status_code>",
+//!     "data": "<data>"
+//! }
+//! ```
+//!
+//! In `Failed` case, It generates JSON response in the following format:
+//!
+//! ```json
+//! {
+//!     "status": "failed",
+//!     "code": "<status_code>",
+//!     "message": "<error_message>"
+//! }
+//! ```
 //!
 //! # Examples
 //!
-//! ```
-//! use json_response;
+//! ```no_run
+//! use hyper::{Body, Request, Response, Server, StatusCode};
+//! // Import required json_response methods.
+//! use json_response::{json_failed_resp_with_message, json_success_resp};
+//! use routerify::{Router, RouterService};
+//! use std::net::SocketAddr;
 //!
-//! # fn run() {
-//! println!("{}", json_response::add(2, 3));
-//! # }
-//! # run();
+//! async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+//!     // Fetch response data from somewhere.
+//!     let users = ["Alice", "John"];
+//!
+//!     // Generate a success JSON response with the data in the following format:
+//!     // { "status": "success", code: 200, data: ["Alice", "John"] }
+//!     json_success_resp(&users)
+//! }
+//!
+//! async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+//!     // Generate a failed JSON response in the following format:
+//!     // { "status": "failed", code: 500, data: "Internal Server Error: Couldn't fetch book list from database" }
+//!     json_failed_resp_with_message(
+//!         StatusCode::INTERNAL_SERVER_ERROR,
+//!         "Couldn't fetch book list from database",
+//!     )
+//! }
+//!
+//! // Create a router.
+//! fn router() -> Router<Body, routerify::Error> {
+//!     Router::builder()
+//!         // Attach the handlers.
+//!         .get("/users", list_users_handler)
+//!         .get("/books", list_books_handler)
+//!         .build()
+//!         .unwrap()
+//! }
+//!
+//! #[tokio::main]
+//! async fn main() {
+//!     let router = router();
+//!
+//!     // Create a Service from the router above to handle incoming requests.
+//!     let service = RouterService::new(router);
+//!
+//!     // The address on which the server will be listening.
+//!     let addr = SocketAddr::from(([127, 0, 0, 1], 3001));
+//!
+//!     // Create a server by passing the created service to `.serve` method.
+//!     let server = Server::bind(&addr).serve(service);
+//!
+//!     println!("App is running on: {}", addr);
+//!     if let Err(err) = server.await {
+//!         eprintln!("Server error: {}", err);
+//!     }
+//! }
 //! ```
 
-use crate::prelude::*;
-use http::StatusCode;
-use hyper::{header, Body, Response};
-use serde::Serialize;
+pub use failed_resp::{json_failed_resp, json_failed_resp_with_message};
+pub use success_resp::{json_success_resp, json_success_resp_with_code};
 
-pub struct JsonResponse<T = ()>
-where
-    T: Serialize,
-{
-    inner: Inner<T>,
-}
-
-enum Inner<T> {
-    Success(SuccessData<T>),
-    Error(ErrorData),
-}
-
-#[derive(Serialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-struct SuccessData<T> {
-    status: Status,
-    code: u16,
-    data: T,
-}
-
-#[derive(Serialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-struct ErrorData {
-    status: Status,
-    code: u16,
-    message: String,
-}
-
-#[derive(Serialize, Debug, Clone)]
-enum Status {
-    #[serde(rename = "Success")]
-    SUCCESS,
-    #[serde(rename = "Failed")]
-    FAILED,
-}
-
-impl<T: Serialize> JsonResponse<T> {
-    pub fn with_success(code: StatusCode, data: T) -> Self {
-        JsonResponse {
-            inner: Inner::Success(SuccessData {
-                status: Status::SUCCESS,
-                code: code.as_u16(),
-                data,
-            }),
-        }
-    }
-}
-
-impl JsonResponse<()> {
-    pub fn with_error<M: Into<String>>(code: StatusCode, message: M) -> Self {
-        JsonResponse {
-            inner: Inner::Error(ErrorData {
-                status: Status::FAILED,
-                code: code.as_u16(),
-                message: message.into(),
-            }),
-        }
-    }
-
-    pub fn with_error_include_code<M: Into<String>>(code: StatusCode, message: M) -> Self {
-        Self::with_error(
-            code,
-            format!("{}: {}", code.canonical_reason().unwrap(), message.into()),
-        )
-    }
-
-    pub fn with_error_code(code: StatusCode) -> Self {
-        Self::with_error(code, code.canonical_reason().unwrap().to_owned())
-    }
-}
-
-impl<T: Serialize> JsonResponse<T> {
-    pub fn into_response(self) -> crate::Result<Response<Body>> {
-        let code;
-        let body;
-
-        match self.inner {
-            Inner::Success(success_data) => {
-                code = success_data.code;
-                body = Body::from(
-                    serde_json::to_vec(&success_data)
-                        .context("JsonResponse: Failed to convert success data to JSON")?,
-                );
-            }
-            Inner::Error(err_data) => {
-                code = err_data.code;
-                body = Body::from(
-                    serde_json::to_vec(&err_data).context("JsonResponse: Failed to convert error data to JSON")?,
-                );
-            }
-        }
-
-        Ok(Response::builder()
-            .status(StatusCode::from_u16(code).unwrap())
-            .header(header::CONTENT_TYPE, "application/json; charset=utf-8")
-            .body(body)
-            .context("JsonResponse: Failed to create a response")?)
-    }
-}
+mod failed_resp;
+mod gen_resp;
+mod success_resp;

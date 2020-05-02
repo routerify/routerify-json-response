@@ -1,47 +1,3 @@
-[![Github Actions Status](https://github.com/routerify/json-response/workflows/Test/badge.svg)](https://github.com/routerify/json-response/actions)
-[![crates.io](https://img.shields.io/crates/v/json-response.svg)](https://crates.io/crates/json-response)
-[![Documentation](https://docs.rs/json-response/badge.svg)](https://docs.rs/json-response)
-[![MIT](https://img.shields.io/crates/l/json-response.svg)](./LICENSE)
-
-# json-response
-
-A utility library to send JSON response for [`Routerify`](https://github.com/routerify/routerify) and the Rust HTTP library [`hyper.rs`](https://hyper.rs/) apps.
-
-In `Success` case, It generates JSON response in the following format:
- 
-```json
-{
-    "status": "success",
-    "code": "<status_code>",
-    "data": "<data>"
-}
-```
-
-In `Failed` case, It generates JSON response in the following format:
-
-```json
-{
-    "status": "failed",
-    "code": "<status_code>",
-    "message": "<error_message>"
-}
-```
-
-[Docs](https://docs.rs/json-response)
-
-## Install
-
-Add this to your `Cargo.toml`:
-
-```toml
-[dependencies]
-routerify = "1.0"
-json-response = "1.0"
-```
-
-## Example
-
-```rust
 use hyper::{Body, Request, Response, Server, StatusCode};
 // Import required json_response methods.
 use json_response::{json_failed_resp_with_message, json_success_resp};
@@ -94,8 +50,3 @@ async fn main() {
         eprintln!("Server error: {}", err);
     }
 }
-```
-
-## Contributing 
-
-Your PRs and suggestions are always welcome.

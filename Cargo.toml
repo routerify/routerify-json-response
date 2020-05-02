@@ -1,7 +1,7 @@
 [package]
 name = "json-response"
 version = "1.0.0"
-description = "A utility library to send JSON response."
+description = "A utility library to send JSON response for Routerify and hyper.rs apps."
 homepage = "https://github.com/routerify/json-response"
 repository = "https://github.com/routerify/json-response"
 keywords = ["routerify", "hyper-rs", "json", "response"]
@@ -12,8 +12,10 @@ license = "MIT"
 edition = "2018"
 
 [dependencies]
-routerify = "1.0"
 hyper = "0.13"
+routerify = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [dev-dependencies]
 tokio = { version = "0.2", features = ["full"] }
