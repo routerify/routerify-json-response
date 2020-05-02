@@ -1,9 +1,9 @@
 [package]
-name = "json-response"
+name = "routerify-json-response"
 version = "1.0.0"
-description = "A utility library to send JSON response for Routerify and hyper.rs apps."
-homepage = "https://github.com/routerify/json-response"
-repository = "https://github.com/routerify/json-response"
+description = "A Routerify utility library to generate JSON response."
+homepage = "https://github.com/routerify/routerify-json-response"
+repository = "https://github.com/routerify/routerify-json-response"
 keywords = ["routerify", "hyper-rs", "json", "response"]
 categories = ["asynchronous", "web-programming", "web-programming::http-server"]
 authors = ["Rousan Ali <hello@rousan.io>"]

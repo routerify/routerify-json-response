@@ -1,7 +1,7 @@
 use hyper::{Body, Request, Response, Server, StatusCode};
-// Import required json_response methods.
-use json_response::{json_failed_resp_with_message, json_success_resp};
+// Import required routerify_json_response methods.
 use routerify::{Router, RouterService};
+use routerify_json_response::{json_failed_resp_with_message, json_success_resp};
 use std::net::SocketAddr;
 
 async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {

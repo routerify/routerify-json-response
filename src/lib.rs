@@ -1,4 +1,4 @@
-//! A utility library to send JSON response for [`Routerify`](https://github.com/routerify/routerify) and the Rust HTTP library [`hyper.rs`](https://hyper.rs/) apps.
+//! A [`Routerify`](https://github.com/routerify/routerify) utility library to generate JSON response.
 //!
 //! In `Success` case, It generates JSON response in the following format:
 //!
@@ -24,8 +24,8 @@
 //!
 //! ```no_run
 //! use hyper::{Body, Request, Response, Server, StatusCode};
-//! // Import required json_response methods.
-//! use json_response::{json_failed_resp_with_message, json_success_resp};
+//! // Import required routerify_json_response methods.
+//! use routerify_json_response::{json_failed_resp_with_message, json_success_resp};
 //! use routerify::{Router, RouterService};
 //! use std::net::SocketAddr;
 //!

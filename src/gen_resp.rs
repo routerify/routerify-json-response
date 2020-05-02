@@ -10,7 +10,7 @@ where
         Ok(json_data) => json_data,
         Err(err) => {
             return Err(routerify::Error::new(format!(
-                "json-response: Failed to convert the response data as JSON: {}",
+                "routerify-json-response: Failed to convert the response data as JSON: {}",
                 err
             )));
         }
@@ -28,7 +28,7 @@ where
     match resp {
         Ok(resp) => Ok(resp),
         Err(err) => Err(routerify::Error::new(format!(
-            "json-response: Failed to create response: {}",
+            "routerify-json-response: Failed to create response: {}",
             err
         ))),
     }

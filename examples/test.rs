@@ -1,6 +1,8 @@
 use hyper::{Body, Request, Response, Server, StatusCode};
-use json_response::{json_failed_resp, json_failed_resp_with_message, json_success_resp, json_success_resp_with_code};
 use routerify::{Router, RouterService};
+use routerify_json_response::{
+    json_failed_resp, json_failed_resp_with_message, json_success_resp, json_success_resp_with_code,
+};
 use std::{convert::Infallible, net::SocketAddr};
 
 async fn home_handler(_: Request<Body>) -> Result<Response<Body>, Infallible> {
