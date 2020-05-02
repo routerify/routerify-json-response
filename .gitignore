@@ -44,6 +44,6 @@ Cargo.lock
 ### Others ###
 .halt.releez.yml
 /.idea
-json-response.iml
+routerify-json-response.iml
 
 # End of https://www.gitignore.io/api/rust,macos

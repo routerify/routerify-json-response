@@ -28,7 +28,7 @@ struct FailedResp {
 ///
 /// ```
 /// use hyper::{Body, Request, Response, StatusCode};
-/// use json_response::{json_failed_resp_with_message};
+/// use routerify_json_response::{json_failed_resp_with_message};
 ///
 /// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
 ///     // Generate a failed JSON response in the following format:
@@ -69,7 +69,7 @@ where
 ///
 /// ```
 /// use hyper::{Body, Request, Response, StatusCode};
-/// use json_response::{json_failed_resp};
+/// use routerify_json_response::{json_failed_resp};
 ///
 /// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
 ///     // Generate a failed JSON response in the following format:

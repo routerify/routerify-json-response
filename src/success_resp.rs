@@ -31,7 +31,7 @@ where
 ///
 /// ```
 /// use hyper::{Body, Request, Response, StatusCode};
-/// use json_response::{json_success_resp_with_code};
+/// use routerify_json_response::{json_success_resp_with_code};
 ///
 /// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
 ///     // Fetch response data from somewhere.
@@ -72,7 +72,7 @@ where
 ///
 /// ```
 /// use hyper::{Body, Request, Response, StatusCode};
-/// use json_response::{json_success_resp};
+/// use routerify_json_response::{json_success_resp};
 ///
 /// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
 ///     // Fetch response data from somewhere.
