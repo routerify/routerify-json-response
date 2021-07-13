@@ -30,7 +30,7 @@ In `Failed` case, It generates JSON response in the following format:
 [Docs](https://docs.rs/routerify-json-response)
 
 ## Install
-
+ 
 Add this to your `Cargo.toml`:
 
 ```toml
