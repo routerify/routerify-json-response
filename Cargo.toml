@@ -1,6 +1,6 @@
 [package]
 name = "routerify-json-response"
-version = "1.1.0"
+version = "2.0.0"
 description = "A Routerify utility library to generate JSON response."
 homepage = "https://github.com/routerify/routerify-json-response"
 repository = "https://github.com/routerify/routerify-json-response"
@@ -12,11 +12,12 @@ license = "MIT"
 edition = "2018"
 
 [dependencies]
-hyper = "0.13"
-routerify = "1.1"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+http-body = "0.4"
+http = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
 [dev-dependencies]
-tokio = { version = "0.2", features = ["full"] }
-stream-body = "0.1"
+tokio = { version = "1", features = ["full"] }
+hyper = { version = "0.14", features = ["server"] }
+routerify = "2"

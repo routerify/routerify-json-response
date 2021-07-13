@@ -1,7 +1,8 @@
-use hyper::{body::HttpBody, header, Response, StatusCode};
+use http::{header, Response, StatusCode};
+use http_body::Body as HttpBody;
 use serde::Serialize;
 
-pub(crate) fn gen_response<B, D>(code: StatusCode, resp_data: &D) -> routerify::Result<Response<B>>
+pub(crate) fn gen_response<B, D>(code: StatusCode, resp_data: &D) -> crate::Result<Response<B>>
 where
     B: HttpBody + From<Vec<u8>> + Send + Sync + Unpin + 'static,
     D: Serialize + Send + Sync + Unpin,
@@ -9,9 +10,12 @@ where
     let json_resp_data = match serde_json::to_vec(&resp_data) {
         Ok(json_data) => json_data,
         Err(err) => {
-            return Err(routerify::Error::new(format!(
-                "routerify-json-response: Failed to convert the response data as JSON: {}",
-                err
+            return Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                format!(
+                    "routerify-json-response: Failed to convert the response data as JSON: {}",
+                    err
+                ),
             )));
         }
     };
@@ -27,9 +31,9 @@ where
 
     match resp {
         Ok(resp) => Ok(resp),
-        Err(err) => Err(routerify::Error::new(format!(
-            "routerify-json-response: Failed to create response: {}",
-            err
+        Err(err) => Err(Box::new(std::io::Error::new(
+            std::io::ErrorKind::Other,
+            format!("routerify-json-response: Failed to create response: {}", err),
         ))),
     }
 }
