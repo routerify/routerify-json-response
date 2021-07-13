@@ -1,5 +1,6 @@
 use crate::gen_resp::gen_response;
-use hyper::{body::HttpBody, Response, StatusCode};
+use http::{Response, StatusCode};
+use http_body::Body as HttpBody;
 use serde::Serialize;
 
 const STATUS_FAILED: &'static str = "failed";
@@ -30,7 +31,7 @@ struct FailedResp {
 /// use hyper::{Body, Request, Response, StatusCode};
 /// use routerify_json_response::{json_failed_resp_with_message};
 ///
-/// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+/// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 ///     // Generate a failed JSON response in the following format:
 ///     // { "status": "failed", code: 500, data: "Internal Server Error: Couldn't fetch book list from database" }
 ///     json_failed_resp_with_message(
@@ -39,7 +40,7 @@ struct FailedResp {
 ///      )
 /// }
 /// ```
-pub fn json_failed_resp_with_message<B, M>(code: StatusCode, message: M) -> routerify::Result<Response<B>>
+pub fn json_failed_resp_with_message<B, M>(code: StatusCode, message: M) -> crate::Result<Response<B>>
 where
     B: HttpBody + From<Vec<u8>> + Send + Sync + Unpin + 'static,
     M: Into<String>,
@@ -71,13 +72,13 @@ where
 /// use hyper::{Body, Request, Response, StatusCode};
 /// use routerify_json_response::{json_failed_resp};
 ///
-/// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+/// async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 ///     // Generate a failed JSON response in the following format:
 ///     // { "status": "failed", code: 500, data: "Internal Server Error" }
 ///     json_failed_resp(StatusCode::INTERNAL_SERVER_ERROR)
 /// }
 /// ```
-pub fn json_failed_resp<B>(code: StatusCode) -> routerify::Result<Response<B>>
+pub fn json_failed_resp<B>(code: StatusCode) -> crate::Result<Response<B>>
 where
     B: HttpBody + From<Vec<u8>> + Send + Sync + Unpin + 'static,
 {

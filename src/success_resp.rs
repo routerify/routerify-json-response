@@ -1,5 +1,6 @@
 use crate::gen_resp::gen_response;
-use hyper::{body::HttpBody, Response, StatusCode};
+use http::{Response, StatusCode};
+use http_body::Body as HttpBody;
 use serde::Serialize;
 
 const STATUS_SUCCESS: &'static str = "success";
@@ -33,7 +34,7 @@ where
 /// use hyper::{Body, Request, Response, StatusCode};
 /// use routerify_json_response::{json_success_resp_with_code};
 ///
-/// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+/// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 ///     // Fetch response data from somewhere.
 ///     let users = ["Alice", "John"];
 ///
@@ -42,7 +43,7 @@ where
 ///     json_success_resp_with_code(StatusCode::CREATED, &users)
 /// }
 /// ```
-pub fn json_success_resp_with_code<B, D>(code: StatusCode, data: &D) -> routerify::Result<Response<B>>
+pub fn json_success_resp_with_code<B, D>(code: StatusCode, data: &D) -> crate::Result<Response<B>>
 where
     B: HttpBody + From<Vec<u8>> + Send + Sync + Unpin + 'static,
     D: Serialize + Send + Sync + Unpin,
@@ -74,7 +75,7 @@ where
 /// use hyper::{Body, Request, Response, StatusCode};
 /// use routerify_json_response::{json_success_resp};
 ///
-/// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+/// async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 ///     // Fetch response data from somewhere.
 ///     let users = ["Alice", "John"];
 ///
@@ -83,7 +84,7 @@ where
 ///     json_success_resp(&users)
 /// }
 /// ```
-pub fn json_success_resp<B, D>(data: &D) -> routerify::Result<Response<B>>
+pub fn json_success_resp<B, D>(data: &D) -> crate::Result<Response<B>>
 where
     B: HttpBody + From<Vec<u8>> + Send + Sync + Unpin + 'static,
     D: Serialize + Send + Sync + Unpin,

@@ -35,8 +35,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-routerify = "1.1"
-routerify-json-response = "1.1"
+routerify = "2"
+routerify-json-response = "2"
 ```
 
 ## Example
@@ -48,7 +48,7 @@ use routerify_json_response::{json_failed_resp_with_message, json_success_resp};
 use routerify::{Router, RouterService};
 use std::net::SocketAddr;
 
-async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
     // Fetch response data from somewhere.
     let users = ["Alice", "John"];
 
@@ -57,7 +57,7 @@ async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerif
     json_success_resp(&users)
 }
 
-async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
     // Generate a failed JSON response in the following format:
     // { "status": "failed", code: 500, data: "Internal Server Error: Couldn't fetch book list from database" }
     json_failed_resp_with_message(
@@ -67,7 +67,7 @@ async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerif
 }
 
 // Create a router.
-fn router() -> Router<Body, routerify::Error> {
+fn router() -> Router<Body, routerify_json_response::Error> {
     Router::builder()
         // Attach the handlers.
         .get("/users", list_users_handler)

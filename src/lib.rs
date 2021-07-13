@@ -29,7 +29,7 @@
 //! use routerify::{Router, RouterService};
 //! use std::net::SocketAddr;
 //!
-//! async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+//! async fn list_users_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 //!     // Fetch response data from somewhere.
 //!     let users = ["Alice", "John"];
 //!
@@ -38,7 +38,7 @@
 //!     json_success_resp(&users)
 //! }
 //!
-//! async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify::Error> {
+//! async fn list_books_handler(_: Request<Body>) -> Result<Response<Body>, routerify_json_response::Error> {
 //!     // Generate a failed JSON response in the following format:
 //!     // { "status": "failed", code: 500, data: "Internal Server Error: Couldn't fetch book list from database" }
 //!     json_failed_resp_with_message(
@@ -48,7 +48,7 @@
 //! }
 //!
 //! // Create a router.
-//! fn router() -> Router<Body, routerify::Error> {
+//! fn router() -> Router<Body, routerify_json_response::Error> {
 //!     Router::builder()
 //!         // Attach the handlers.
 //!         .get("/users", list_users_handler)
@@ -77,9 +77,13 @@
 //! }
 //! ```
 
+pub use error::Error;
 pub use failed_resp::{json_failed_resp, json_failed_resp_with_message};
 pub use success_resp::{json_success_resp, json_success_resp_with_code};
 
+mod error;
 mod failed_resp;
 mod gen_resp;
 mod success_resp;
+
+pub type Result<T> = std::result::Result<T, Error>;
