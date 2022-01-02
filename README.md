@@ -35,8 +35,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-routerify = "2"
-routerify-json-response = "2"
+routerify = "3"
+routerify-json-response = "3"
 ```
 
 ## Example

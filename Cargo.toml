@@ -1,6 +1,6 @@
 [package]
 name = "routerify-json-response"
-version = "2.0.0"
+version = "3.0.0"
 description = "A Routerify utility library to generate JSON response."
 homepage = "https://github.com/routerify/routerify-json-response"
 repository = "https://github.com/routerify/routerify-json-response"
