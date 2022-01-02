@@ -20,4 +20,4 @@ serde_json = "1"
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
 hyper = { version = "0.14", features = ["server"] }
-routerify = "2"
+routerify = "3"
