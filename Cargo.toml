@@ -1,6 +1,6 @@
 [package]
 name = "routerify-json-response"
-version = "2.0.0"
+version = "3.0.0"
 description = "A Routerify utility library to generate JSON response."
 homepage = "https://github.com/routerify/routerify-json-response"
 repository = "https://github.com/routerify/routerify-json-response"
@@ -20,4 +20,4 @@ serde_json = "1"
 [dev-dependencies]
 tokio = { version = "1", features = ["full"] }
 hyper = { version = "0.14", features = ["server"] }
-routerify = "2"
+routerify = "3"
